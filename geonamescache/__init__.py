@@ -25,7 +25,7 @@ class GeonamesCache:
         self.min_city_population = min_city_population
 
     def get_dataset_by_key(self, dataset, key):
-        return dict((d[key], d) for c, d in list(dataset.items()))
+        return {d[key]: d for c, d in list(dataset.items())}
 
     def get_continents(self):
         if self.continents is None:
@@ -80,18 +80,17 @@ class GeonamesCache:
             if case_sensitive:
                 if query in record[attribute]:
                     results.append(record)
-            else:
-                if isinstance(record[attribute], list):
-                    if any(
-                        getattr(query, 'casefold')() == getattr(value, 'casefold')()
-                        for value in record[attribute]
-                    ):
-                        results.append(record)
-                elif (
-                    getattr(query, 'casefold')()
-                    in getattr(record[attribute], 'casefold')()
+            elif isinstance(record[attribute], list):
+                if any(
+                    getattr(query, 'casefold')() == getattr(value, 'casefold')()
+                    for value in record[attribute]
                 ):
                     results.append(record)
+            elif (
+                getattr(query, 'casefold')()
+                in getattr(record[attribute], 'casefold')()
+            ):
+                results.append(record)
         return results
 
     @staticmethod

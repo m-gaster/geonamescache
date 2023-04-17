@@ -11,7 +11,7 @@ p_data = Path('data')
 for min_population in [500, 1000, 5000, 15000]:
     cities = {}
     slug = f'cities{min_population}'
-    reader = csv.reader(p_data.joinpath(slug + '.txt').open(), 'excel-tab')
+    reader = csv.reader(p_data.joinpath(f'{slug}.txt').open(), 'excel-tab')
 
     for record in reader:
         (geonameid, name, asciiname, alternatenames, latitude, longitude,
@@ -35,4 +35,4 @@ for min_population in [500, 1000, 5000, 15000]:
             'alternatenames': alternatenames.split(',')
         }
 
-    p_data.joinpath(slug + '.json').write_text(json.dumps(cities))
+    p_data.joinpath(f'{slug}.json').write_text(json.dumps(cities))
